@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import useSWRMutation from "swr/mutation";
 
-export function SampleA() {
+export function SampleC() {
   const { data } = useTodos()
   const { trigger } = useAddTodo();
   const [todo, setTodo] = useState<string>("");
 
   return (
     <div className="card">
-      <h2>useSWRとuseSWRMutationでキャッシュキーが一致するパターン</h2>
+      <h2>useSWRとuseSWRMutationでキャッシュキーが一致しないが、再検証メソッドを呼んでいるパターン</h2>
       <ul>
         {data?.todos.map((todo: string, i: number) => (
             <li key={i}>{todo}</li>
@@ -34,15 +34,15 @@ function useTodos() {
 }
 
 const useAddTodo = () => {
+  const { mutate } = useSWRConfig();
+
   const fetcher = (url: string, body: object) => fetch(url, {
     method: 'POST',
     body: JSON.stringify(body),
   }).then((res) => res.json());
 
-  return useSWRMutation('/api/todos', async (url, { arg: { todo } }: { arg: { todo: string } }) => {
+  return useSWRMutation('/api/todos-dummy', async (url, { arg: { todo } }: { arg: { todo: string } }) => {
     await fetcher(url, { todo });
-
-    // await mutate('/api/todos');
-    // 呼ばなくても良い
+    await mutate('/api/todos');
   });
 };

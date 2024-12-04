@@ -1,7 +1,9 @@
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { SampleA } from './components/sampleA'
+import { SampleA } from './components/SampleA'
+import { SampleB } from './components/SampleB'
+import { SampleC } from './components/SampleC'
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         </a>
       </div>
       <SampleA />
+      <SampleB />
+      <SampleC />
     </>
   )
 }

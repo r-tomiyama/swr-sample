@@ -16,6 +16,15 @@ export const handlers = [
 
     return HttpResponse.json({ todos });
   }),
+  http.post('/api/todos-dummy', async (obj) => {
+    await obj.request.body?.getReader().read().then(({ value }) => {
+      const result = new TextDecoder().decode(value);
+      const { todo } = JSON.parse(result);
+      todos.push(todo);
+    });
+
+    return HttpResponse.json({ todos });
+  }),
 ];
 
 const todos = ["Buy milk", "Walk the dog", "Do laundry"];
